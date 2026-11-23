@@ -1,0 +1,83 @@
+.page-header {
+  max-width: 76rem;
+  margin-inline: auto;
+  padding: clamp(2rem, 6vw, 4.5rem) var(--gutter) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.page-header h1 {
+  font-size: var(--text-title);
+  font-weight: 450;
+  letter-spacing: -0.02em;
+}
+
+.page-header p {
+  max-width: 38rem;
+  margin-top: 1rem;
+  color: var(--ink-soft);
+}
+
+.page-main {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  max-width: 76rem;
+  margin-inline: auto;
+  padding: 0 var(--gutter) 4rem;
+}
+
+@media (max-width: 36rem) {
+  .catalog {
+    padding-inline-start: 1rem;
+  }
+}
+
+@media (min-width: 62rem) {
+  .page-main {
+    grid-template-columns: minmax(0, 1fr) 22rem;
+    align-items: start;
+  }
+}
+
+/* Página de libro mayor: doble línea de margen a la izquierda. */
+.catalog {
+  min-width: 0;
+  padding-inline-start: 1.5rem;
+  background:
+    linear-gradient(var(--margin-red), var(--margin-red)) 0 0 / 1px 100% no-repeat,
+    linear-gradient(var(--margin-red), var(--margin-red)) 4px 0 / 1px 100% no-repeat;
+}
+
+.catalog > h2 {
+  margin-bottom: 1rem;
+}
+
+.catalog__message {
+  padding-block: 1.5rem;
+  color: var(--ink-soft);
+}
+
+.catalog__message--error {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+  color: var(--margin-red);
+  font-weight: 500;
+}
+
+/* Ficha de asiento: una hoja suelta con borde y sombra de hojas apiladas. */
+.slip {
+  padding: 1.5rem;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-strong);
+  box-shadow: 5px 5px 0 -1px var(--paper-raised), 5px 5px 0 0 var(--rule-strong);
+}
+
+.slip > h2 {
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 62rem) {
+  .slip {
+    position: sticky;
+    inset-block-start: 1.5rem;
+  }
+}

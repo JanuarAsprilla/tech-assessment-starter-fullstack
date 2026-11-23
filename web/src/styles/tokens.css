@@ -1,0 +1,30 @@
+/* Tokens del "libro mayor": papel verdoso, tinta verde-negra y tres tintas con significado. */
+:root {
+  --paper: #f1f4ee;
+  --paper-raised: #f8faf5;
+  --ink: #16241f;
+  --ink-soft: #4b5b54;
+  --rule: #c9d3ca;
+  --rule-strong: #9daea3;
+  --field-border: #5e7268;
+
+  --ledger: #1f5c4a;
+  --ledger-dark: #17463a;
+  --debit: #274b73;
+  --credit: #7e2a38;
+  --margin-red: #b5392f;
+
+  --font-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --text-sm: 0.875rem;
+  --text-base: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+  --text-h2: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+  --text-title: clamp(2.5rem, 1.4rem + 4.6vw, 5rem);
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --indent: 1.5rem;
+
+  --duration-fast: 120ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}

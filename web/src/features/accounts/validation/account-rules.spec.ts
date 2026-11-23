@@ -1,4 +1,31 @@
-import { levelOfCode, requiresNature, validateAccountForm } from './account-rules'
+import {
+  levelOfCode,
+  parentCodeOf,
+  requiresNature,
+  validateAccountForm,
+} from './account-rules'
+
+describe('parentCodeOf', () => {
+  it.each([
+    ['110505', '1105'],
+    ['1105', '11'],
+    ['11', '1'],
+  ])('returns the parent of %s', (code, parent) => {
+    expect(parentCodeOf(code)).toBe(parent)
+  })
+
+  it('returns null for a class, which has no parent', () => {
+    expect(parentCodeOf('1')).toBeNull()
+  })
+
+  it.each(['', '111', '12a'])('returns null for the invalid code "%s"', (code) => {
+    expect(parentCodeOf(code)).toBeNull()
+  })
+
+  it('ignores surrounding whitespace', () => {
+    expect(parentCodeOf(' 1105 ')).toBe('11')
+  })
+})
 
 describe('levelOfCode', () => {
   it.each([

@@ -10,6 +10,13 @@ const LEVEL_BY_CODE_LENGTH: Readonly<Record<number, AccountLevel>> = {
   6: 'subaccount',
 }
 
+/** Longitud del código del nivel inmediatamente superior. */
+const PARENT_LENGTH_BY_LEVEL: Readonly<Record<Exclude<AccountLevel, 'class'>, number>> = {
+  group: 1,
+  account: 2,
+  subaccount: 4,
+}
+
 const DIGITS_ONLY = /^\d+$/
 
 export interface AccountFormValues {
@@ -25,6 +32,16 @@ export function levelOfCode(code: string): AccountLevel | null {
   const value = code.trim()
   if (!DIGITS_ONLY.test(value)) return null
   return LEVEL_BY_CODE_LENGTH[value.length] ?? null
+}
+
+/** Código del nivel inmediatamente superior, o `null` si es una clase o el código no es válido. */
+export function parentCodeOf(code: string): string | null {
+  const value = code.trim()
+  const level = levelOfCode(value)
+  if (level === null || level === 'class') return null
+
+  const parentLength = PARENT_LENGTH_BY_LEVEL[level]
+  return value.slice(0, parentLength)
 }
 
 /** Solo una clase define su naturaleza; el resto la hereda. */

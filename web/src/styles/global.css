@@ -1,0 +1,120 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  font-optical-sizing: auto;
+  line-height: 1.55;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--text-h2);
+}
+
+p {
+  margin-block: 0;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ledger);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--gutter);
+  inset-block-start: 0;
+  padding: 0.5rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-120%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.button {
+  min-height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.button:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+.button--primary {
+  background: var(--ledger);
+  color: #fff;
+}
+
+.button--primary:hover:not(:disabled) {
+  background: var(--ledger-dark);
+}
+
+.button--quiet {
+  background: transparent;
+  border-color: var(--rule-strong);
+}
+
+.button--quiet:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ledger) 8%, transparent);
+}
+
+.button--danger {
+  color: var(--margin-red);
+  border-color: currentColor;
+}
+
+.button--danger-solid {
+  background: var(--margin-red);
+  color: #fff;
+}
+
+.button--danger-solid:hover:not(:disabled) {
+  background: #8f2c24;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
