@@ -37,7 +37,7 @@ La regla de dependencia apunta hacia adentro: `presentation → application → 
 
 - **Validar en el borde y en el dominio.** El DTO rechaza formas inválidas y el dominio protege sus invariantes aunque el borde falle.
 - El código solo acepta `^\d+$`, con longitud máxima y con nombre acotado y recortado (`trim`). Se rechazan campos desconocidos (`whitelist`, `forbidNonWhitelisted`).
-- Los errores no filtran detalles internos: un filtro global convierte errores de dominio en HTTP 4xx con `{ code, message, field? }`, y cualquier otro error devuelve un 500 genérico. El detalle se registra solo en el servidor.
+- Los errores no filtran detalles internos: un filtro global convierte errores de dominio en HTTP 4xx con la forma única `{ code, message, errors: [{ field, message }] }` (400 entrada inválida, 404 no existe, 409 conflicto, 422 padre inexistente), y cualquier otro error devuelve un 500 genérico. El detalle se registra solo en el servidor.
 - `helmet` y CORS restringido a `WEB_ORIGIN`. Límite de tamaño del cuerpo y limitación de tasa (`@nestjs/throttler`).
 - Sin secretos en el código: configuración por variables de entorno, con `.env.example` y sin `.env` en git.
 - Front: sin `dangerouslySetInnerHTML`, React escapa los datos. Los parámetros de URL se codifican con `encodeURIComponent`. El front **no confía** en sus propias validaciones: son solo ayuda para el usuario.
