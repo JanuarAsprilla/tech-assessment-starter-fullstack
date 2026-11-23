@@ -1,3 +1,8 @@
+/*
+ * Todo en la capa `base`: así las utilidades de Tailwind (capa `utilities`) pueden
+ * sobrescribirlo. Lo que está fuera de una capa gana siempre sobre las capas.
+ */
+@layer base {
 *,
 *::before,
 *::after {
@@ -117,4 +122,5 @@ input {
     animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
 }
