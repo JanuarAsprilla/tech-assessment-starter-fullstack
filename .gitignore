@@ -1,0 +1,47 @@
+# Política: solo se versiona lo esencial
+# (código fuente, configuración, lockfiles y documentación).
+
+# Dependencias
+node_modules/
+
+# Artefactos de build y salidas generadas
+dist/
+build/
+out/
+coverage/
+*.tsbuildinfo
+
+# Caché de herramientas
+.vite/
+.cache/
+.eslintcache
+.oxlintcache
+.vitest/
+
+# Secretos y variables de entorno (se versiona solo el .env.example)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores e IDEs
+.idea/
+.vscode/
+*.swp
+
+# Herramientas de IA y sesiones locales
+.claude/
+.claude-mem/
+.superpowers/
+
+# Temporales
+tmp/
+temp/
+*.tmp
