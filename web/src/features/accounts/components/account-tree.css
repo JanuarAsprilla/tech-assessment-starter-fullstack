@@ -1,0 +1,173 @@
+.account-tree__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.account-tree__toolbar .button {
+  min-height: 2.25rem;
+  font-size: var(--text-sm);
+}
+
+.account-tree__list,
+.account-tree__group {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.account-tree__item {
+  outline: none;
+}
+
+.account-tree__item:focus-visible > .account-tree__row {
+  outline: 3px solid var(--ledger);
+  outline-offset: -3px;
+}
+
+/* Cada nivel pesa menos que el anterior: la jerarquía se lee por escala y peso. */
+.account-tree__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding-block: 0.5rem;
+  padding-inline: calc((var(--level) - 1) * var(--indent)) 0.5rem;
+  font-size: calc(1em * (1.2 - var(--level) * 0.05));
+  font-weight: calc(700 - var(--level) * 70);
+  cursor: pointer;
+}
+
+.account-tree__row:hover {
+  background: color-mix(in srgb, var(--ledger) 6%, transparent);
+}
+
+.account-tree__row[data-active] {
+  background: color-mix(in srgb, var(--ledger) 11%, transparent);
+}
+
+.account-tree__marker {
+  flex: none;
+  display: grid;
+  place-items: center;
+  /* Área táctil de 24px (WCAG 2.5.8) aunque el chevron se vea más pequeño. */
+  width: 1.5rem;
+  height: 1.5rem;
+  align-self: center;
+}
+
+.account-tree__marker[data-branch] {
+  cursor: pointer;
+}
+
+.account-tree__marker::before {
+  content: '';
+  display: block;
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  background: var(--rule-strong);
+}
+
+.account-tree__marker[data-branch]::before {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 0;
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  background: none;
+  transform: rotate(-45deg);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.account-tree__marker[data-open]::before {
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.account-tree__label {
+  display: flex;
+  gap: 0.4em;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.account-tree__code {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+.account-tree__leader {
+  flex: 1;
+  min-width: 0.75rem;
+  border-bottom: 2px dotted var(--rule-strong);
+  transform: translateY(-0.2em);
+}
+
+.account-tree__nature {
+  min-width: 4.25rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.account-tree__nature--debit {
+  color: var(--debit);
+}
+
+.account-tree__nature--credit {
+  color: var(--credit);
+}
+
+.account-tree__level {
+  min-width: 5rem;
+  font-size: var(--text-sm);
+  font-weight: 400;
+  text-align: end;
+  color: var(--ink-soft);
+}
+
+.account-tree__detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  padding-inline-start: calc((var(--level) - 1) * var(--indent) + 1.75rem);
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.account-tree__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 36rem) {
+  .account-tree {
+    --indent: 0.875rem;
+  }
+
+  .account-tree__row {
+    flex-wrap: wrap;
+    gap: 0 0.5rem;
+  }
+
+  .account-tree__label {
+    flex: 1 1 8rem;
+  }
+
+  /* El relleno de puntos es decorativo: en pantallas angostas cede su espacio al texto. */
+  .account-tree__leader {
+    display: none;
+  }
+
+  .account-tree__nature,
+  .account-tree__level {
+    min-width: 0;
+  }
+}
