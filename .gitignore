@@ -37,6 +37,7 @@ Thumbs.db
 *.swp
 
 # Herramientas de IA y sesiones locales
+.playwright-mcp/
 .claude/
 .claude-mem/
 .superpowers/
