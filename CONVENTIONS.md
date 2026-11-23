@@ -60,7 +60,18 @@ La regla de dependencia apunta hacia adentro: `presentation → application → 
 - Nombres descriptivos: `rechaza crear una cuenta cuando el padre no existe`. Estructura Arrange-Act-Assert.
 - Objetivo de cobertura: 80 % en `domain` y `application`.
 
-## 6. Definición de "terminado" para un bloque
+## 6. Frontend
+
+- **Por feature, no por tipo:** `web/src/features/accounts/` agrupa `api/` (cliente HTTP), `hooks/` (estado del servidor), `validation/` (reglas del formulario) y `components/`. Lo compartido vive en `components/ui/` (primitivas estilo shadcn), `lib/` y `styles/`.
+- **Los componentes no conocen `fetch`:** solo usan los hooks. Todo error de red o de la API llega como `ApiError`, con el mensaje por campo en `fieldMessages()`.
+- **Estado del servidor con caché e invalidación** (TanStack Query), nunca recargando a mano. Cada mutación invalida la clave del árbol.
+- **Nada se selecciona ni se abre solo:** una acción del usuario (clic o tecla) es lo único que cambia la selección. Recibir foco no selecciona.
+- **Estados explícitos:** toda operación asíncrona tiene carga, error con salida (reintentar) y vacío. Nunca una pantalla en blanco ni un error solo en consola.
+- **CSS en capas:** `styles/global.css` vive en `@layer base` para que las utilidades de Tailwind puedan sobrescribirlo (lo que está fuera de una capa gana siempre sobre las capas). El CSS de componentes antiguos se mantiene por componente, junto a su archivo.
+- **Tokens, no valores sueltos:** colores, tipografía y espaciado salen de `styles/tokens.css` y se mapean a las variables de shadcn en `styles/tailwind.css`. Todo par de color de texto se mide contra su fondo real (mínimo 4.5:1, 3:1 para bordes de controles).
+- **Accesibilidad automatizada:** `AccountsPage.a11y.spec.tsx` corre `axe-core` sobre los estados clave (normal, cargando, con errores, con selección y con el diálogo abierto). El contraste se mide aparte porque jsdom no calcula estilos reales.
+
+## 7. Definición de "terminado" para un bloque
 
 - [ ] Pruebas en verde (`npm test`) y lint sin errores (`npm run lint`)
 - [ ] Compila (`npm run build`)
