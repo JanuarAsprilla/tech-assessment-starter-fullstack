@@ -1,4 +1,15 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { FancyButton } from '@/components/ui/fancy-button'
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
 import { LEVEL_LABELS, NATURE_LABELS } from '../labels'
 import { useCreateAccount } from '../hooks/use-create-account'
 import { NATURES, type AccountView, type CreateAccountInput } from '../types'
@@ -12,7 +23,6 @@ import {
   type AccountFormField,
   type AccountFormValues,
 } from '../validation/account-rules'
-import './account-form.css'
 
 const CODE_MAX_LENGTH = 6
 const FIELDS: readonly AccountFormField[] = ['code', 'name', 'nature']
@@ -110,97 +120,87 @@ export function AccountForm({ initialCode = '', focusOnMount = false, onCreated 
     [errors[field] ? `account-${field}-error` : null, extra].filter(Boolean).join(' ') || undefined
 
   return (
-    <form className="account-form" onSubmit={handleSubmit} noValidate>
-      <div className="account-form__field">
-        <label htmlFor="account-code">Código</label>
-        <input
-          id="account-code"
-          ref={codeRef}
-          className="account-form__code"
-          value={values.code}
-          onChange={handleText('code')}
-          inputMode="numeric"
-          autoComplete="off"
-          maxLength={CODE_MAX_LENGTH}
-          aria-invalid={errors.code ? true : undefined}
-          aria-describedby={describedBy('code', 'account-code-hint')}
-        />
-        <p id="account-code-hint" className="account-form__hint">
-          {codeHint(values.code)}
-        </p>
-        {errors.code && (
-          <p id="account-code-error" className="account-form__error">
-            {errors.code}
+    <form className="w-full" onSubmit={handleSubmit} noValidate>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor="account-code">Código</FieldLabel>
+          <Input
+            id="account-code"
+            ref={codeRef}
+            className="font-mono tracking-widest tabular-nums"
+            value={values.code}
+            onChange={handleText('code')}
+            inputMode="numeric"
+            autoComplete="off"
+            maxLength={CODE_MAX_LENGTH}
+            aria-invalid={errors.code ? true : undefined}
+            aria-describedby={describedBy('code', 'account-code-hint')}
+          />
+          <FieldDescription id="account-code-hint">{codeHint(values.code)}</FieldDescription>
+          {errors.code && <FieldError id="account-code-error">{errors.code}</FieldError>}
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor="account-name">Nombre</FieldLabel>
+          <Input
+            id="account-name"
+            ref={nameRef}
+            value={values.name}
+            onChange={handleText('name')}
+            autoComplete="off"
+            maxLength={NAME_MAX_LENGTH}
+            aria-invalid={errors.name ? true : undefined}
+            aria-describedby={describedBy('name')}
+          />
+          {errors.name && <FieldError id="account-name-error">{errors.name}</FieldError>}
+        </Field>
+
+        {showNature && (
+          <FieldSet aria-describedby={describedBy('nature')}>
+            <FieldLegend>Naturaleza</FieldLegend>
+            <div className="grid grid-cols-2 gap-2">
+              {NATURES.map((nature, index) => (
+                <label
+                  key={nature}
+                  className="flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-input bg-white px-3 text-base transition-colors has-checked:border-primary has-checked:bg-primary/5 has-focus-visible:outline-3 has-focus-visible:outline-ring"
+                >
+                  <input
+                    type="radio"
+                    name="nature"
+                    value={nature}
+                    ref={index === 0 ? natureRef : undefined}
+                    checked={values.nature === nature}
+                    onChange={() => update('nature', nature)}
+                    className="size-4 accent-primary"
+                  />
+                  {NATURE_LABELS[nature]}
+                </label>
+              ))}
+            </div>
+            {errors.nature && <FieldError id="account-nature-error">{errors.nature}</FieldError>}
+          </FieldSet>
+        )}
+
+        {generalError && (
+          <p role="alert" className="text-sm font-medium text-destructive">
+            {generalError}
           </p>
         )}
-      </div>
 
-      <div className="account-form__field">
-        <label htmlFor="account-name">Nombre</label>
-        <input
-          id="account-name"
-          ref={nameRef}
-          value={values.name}
-          onChange={handleText('name')}
-          autoComplete="off"
-          maxLength={NAME_MAX_LENGTH}
-          aria-invalid={errors.name ? true : undefined}
-          aria-describedby={describedBy('name')}
-        />
-        {errors.name && (
-          <p id="account-name-error" className="account-form__error">
-            {errors.name}
-          </p>
-        )}
-      </div>
-
-      {showNature && (
-        <fieldset
-          className="account-form__field account-form__nature"
-          aria-describedby={describedBy('nature')}
+        <FancyButton
+          type="submit"
+          size="lg"
+          className="w-full"
+          disabled={mutation.isPending}
+          aria-busy={mutation.isPending || undefined}
         >
-          <legend>Naturaleza</legend>
-          <div className="account-form__choices">
-            {NATURES.map((nature, index) => (
-              <label key={nature} className="account-form__choice">
-                <input
-                  type="radio"
-                  name="nature"
-                  value={nature}
-                  ref={index === 0 ? natureRef : undefined}
-                  checked={values.nature === nature}
-                  onChange={() => update('nature', nature)}
-                />
-                {NATURE_LABELS[nature]}
-              </label>
-            ))}
-          </div>
-          {errors.nature && (
-            <p id="account-nature-error" className="account-form__error">
-              {errors.nature}
-            </p>
-          )}
-        </fieldset>
-      )}
+          {mutation.isPending ? 'Creando…' : 'Crear cuenta'}
+        </FancyButton>
 
-      {generalError && (
-        <p role="alert" className="account-form__error account-form__error--general">
-          {generalError}
+        <p role="status" className="min-h-6 text-sm font-semibold text-primary">
+          {created ? `Cuenta ${created.code} creada.` : ''}
         </p>
-      )}
-
-      <button
-        type="submit"
-        className="button button--primary"
-        disabled={mutation.isPending}
-        aria-busy={mutation.isPending || undefined}
-      >
-        {mutation.isPending ? 'Creando…' : 'Crear cuenta'}
-      </button>
-
-      <p role="status" className="account-form__success">
-        {created ? `Cuenta ${created.code} creada.` : ''}
-      </p>
+      </FieldGroup>
     </form>
   )
 }
