@@ -53,11 +53,19 @@ export function AccountTree({ nodes, onAddChild, onRequestDelete }: AccountTreeP
     ? activeCode
     : (visible[0]?.node.code ?? null)
 
+  /** Mover el foco con el teclado es una acción del usuario: la cuenta queda seleccionada. */
   const focusItem = (code: string | undefined) => {
-    if (code !== undefined) itemRefs.current.get(code)?.focus()
+    if (code === undefined) return
+    setActiveCode(code)
+    itemRefs.current.get(code)?.focus()
   }
 
   const toggle = (code: string) => setCollapsed((current) => withToggled(current, code))
+
+  const toggleAndSelect = (code: string) => {
+    setActiveCode(code)
+    toggle(code)
+  }
 
   function handleKeyDown(event: KeyboardEvent<HTMLLIElement>, node: AccountNode) {
     if (event.target !== event.currentTarget) return
@@ -80,15 +88,16 @@ export function AccountTree({ nodes, onAddChild, onRequestDelete }: AccountTreeP
         focusItem(visible[visible.length - 1]?.node.code)
         break
       case 'ArrowRight':
-        if (isBranch && isCollapsed) toggle(node.code)
+        if (isBranch && isCollapsed) toggleAndSelect(node.code)
         else if (isBranch) focusItem(visible[index + 1]?.node.code)
         break
       case 'ArrowLeft':
-        if (isBranch && !isCollapsed) toggle(node.code)
+        if (isBranch && !isCollapsed) toggleAndSelect(node.code)
         else focusItem(visible[index]?.parentCode ?? undefined)
         break
       case 'Enter':
       case ' ':
+        setActiveCode(node.code)
         if (isBranch) toggle(node.code)
         break
       case 'Delete':
@@ -119,9 +128,6 @@ export function AccountTree({ nodes, onAddChild, onRequestDelete }: AccountTreeP
         aria-labelledby={labelId}
         tabIndex={node.code === tabStopCode ? 0 : -1}
         className="account-tree__item"
-        onFocus={(event) => {
-          if (event.target === event.currentTarget) setActiveCode(node.code)
-        }}
         onKeyDown={(event) => handleKeyDown(event, node)}
       >
         <div

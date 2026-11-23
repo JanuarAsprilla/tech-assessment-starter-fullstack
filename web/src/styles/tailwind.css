@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/*
+ * Variables de shadcn apuntando a la paleta del "libro mayor" (tokens.css),
+ * para que los componentes de ui/ hereden nuestro color y no uno genérico.
+ */
+:root {
+  --radius: 0.625rem;
+  --radius-md: calc(var(--radius) * 0.8);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper-raised);
+  --card-foreground: var(--ink);
+  --primary: var(--ledger);
+  --primary-foreground: #ffffff;
+  --secondary: var(--rule);
+  --secondary-foreground: var(--ink);
+  --muted: #e2e9df;
+  --muted-foreground: var(--ink-soft);
+  --accent: #d6e2d8;
+  --accent-foreground: var(--ink);
+  --destructive: var(--margin-red);
+  --border: var(--rule-strong);
+  --input: var(--field-border);
+  --ring: var(--ledger);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-serif);
+}
