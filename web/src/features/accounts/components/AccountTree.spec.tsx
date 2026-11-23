@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { sampleTree } from '../../../test/fixtures'
 import { AccountTree } from './AccountTree'
@@ -63,6 +63,35 @@ describe('AccountTree', () => {
         .filter((element) => element.getAttribute('tabindex') === '0')
 
       expect(tabbable).toHaveLength(1)
+    })
+  })
+
+  describe('selection', () => {
+    it('selects nothing on its own, not even when an item receives focus', () => {
+      setup()
+
+      act(() => item(/^1 Activo$/).focus())
+
+      expect(item(/^1 Activo$/)).toHaveFocus()
+      expect(screen.queryByRole('button', { name: /^(Eliminar|Agregar hija)/ })).not.toBeInTheDocument()
+      expect(screen.queryByText(/cuentas hijas|admite movimientos/)).not.toBeInTheDocument()
+    })
+
+    it('selects an account once the user navigates to it with the keyboard', async () => {
+      const { user } = setup()
+      item(/^1 Activo$/).focus()
+
+      await user.keyboard('{ArrowDown}')
+
+      expect(screen.getByRole('button', { name: 'Eliminar 11 Disponible' })).toBeInTheDocument()
+    })
+
+    it('selects an account when the user clicks it', async () => {
+      const { user } = setup()
+
+      await user.click(screen.getByText('Pasivo'))
+
+      expect(screen.getByRole('button', { name: 'Eliminar 2 Pasivo' })).toBeInTheDocument()
     })
   })
 
